@@ -1,5 +1,5 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
+const qrcode = require('qrcode'); // ASCII yerine base64 için
 const fs = require('fs-extra');
 
 const state = new Map();
@@ -16,17 +16,24 @@ const client = new Client({
     puppeteer: { headless: true }
 });
 
-client.on('qr', qr => {
-    // Orta boy QR kod (Render ve telefon terminali için ideal)
-    qrcode.generate(qr, { small: true }); 
-    console.log("\n📱 QR kodu tarayın ve botu bağlayın!\n");
+// ---------------- QR KODU ----------------
+client.on('qr', async (qr) => {
+    // QR kodu terminalde ASCII yerine base64 görsel olarak oluştur
+    try {
+        const url = await qrcode.toDataURL(qr);
+        console.log("\n📱 QR kod linki (taratmak için tarayıcıdan açın):\n");
+        console.log(url);
+        console.log("\nLinki açın ve telefonla QR kodu taratın. ✅\n");
+    } catch(err) {
+        console.error("QR kod oluşturulamadı:", err);
+    }
 });
-
 
 client.on('ready', () => {
     console.log('WhatsApp bot hazır ve 7/24 çalışabilir!');
 });
 
+// ---------------- MESAJ AKIŞI ----------------
 client.on('message', async msg => {
     const from = msg.from;
     const text = msg.body.trim().toLowerCase();
