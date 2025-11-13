@@ -17,9 +17,9 @@ const client = new Client({
 });
 
 client.on('qr', qr => {
-    // Daha büyük ve okunabilir QR
-    qrcode.generate(qr, { small: false });
-    console.log("\n📱 WhatsApp QR kodunu tarayın! \n");
+    // Orta boy QR kod (Render ve telefon terminali için ideal)
+    qrcode.generate(qr, { small: true }); 
+    console.log("\n📱 QR kodu tarayın ve botu bağlayın!\n");
 });
 
 
