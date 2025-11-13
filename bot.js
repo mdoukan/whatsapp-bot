@@ -17,9 +17,11 @@ const client = new Client({
 });
 
 client.on('qr', qr => {
-    qrcode.generate(qr, { small: true });
-    console.log("QR kodu tarayın!");
+    // Daha büyük ve okunabilir QR
+    qrcode.generate(qr, { small: false });
+    console.log("\n📱 WhatsApp QR kodunu tarayın! \n");
 });
+
 
 client.on('ready', () => {
     console.log('WhatsApp bot hazır ve 7/24 çalışabilir!');
